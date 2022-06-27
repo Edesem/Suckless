@@ -1,0 +1,11 @@
+--- surf.c
++++ surf.c
+@@ -35,7 +35,7 @@
+ #define LENGTH(x)               (sizeof(x) / sizeof(x[0]))
+ #define CLEANMASK(mask)         (mask & (MODKEY|GDK_SHIFT_MASK))
+ 
+-enum { AtomFind, AtomGo, AtomUri, AtomLast };
++enum { AtomFind, AtomSearch, AtomGo, AtomUri, AtomLast };
+ 
+ enum {
+ 	OnDoc   = WEBKIT_HIT_TEST_RESULT_CONTEXT_DOCUMENT,

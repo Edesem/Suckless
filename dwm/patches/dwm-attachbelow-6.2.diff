@@ -1,0 +1,96 @@
+diff --git a/config.def.h b/config.def.h
+index 1c0b587..cb8053a 100644
+--- a/config.def.h
++++ b/config.def.h
+@@ -35,6 +35,7 @@ static const Rule rules[] = {
+ static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+ static const int nmaster     = 1;    /* number of clients in master area */
+ static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
++static const int attachbelow = 1;    /* 1 means attach after the currently active window */
+ 
+ static const Layout layouts[] = {
+ 	/* symbol     arrange function */
+diff --git a/dwm.1 b/dwm.1
+index 13b3729..fb6e76c 100644
+--- a/dwm.1
++++ b/dwm.1
+@@ -29,6 +29,9 @@ color. The tags of the focused window are indicated with a filled square in the
+ top left corner.  The tags which are applied to one or more windows are
+ indicated with an empty square in the top left corner.
+ .P
++The attach below patch makes newly spawned windows attach after the currently
++selected window
++.P
+ dwm draws a small border around windows to indicate the focus state.
+ .SH OPTIONS
+ .TP
+diff --git a/dwm.c b/dwm.c
+index 4465af1..bd715a2 100644
+--- a/dwm.c
++++ b/dwm.c
+@@ -147,6 +147,7 @@ static int applysizehints(Client *c, int *x, int *y, int *w, int *h, int interac
+ static void arrange(Monitor *m);
+ static void arrangemon(Monitor *m);
+ static void attach(Client *c);
++static void attachBelow(Client *c);
+ static void attachstack(Client *c);
+ static void buttonpress(XEvent *e);
+ static void checkotherwm(void);
+@@ -405,6 +406,21 @@ attach(Client *c)
+ 	c->next = c->mon->clients;
+ 	c->mon->clients = c;
+ }
++void
++attachBelow(Client *c)
++{
++	//If there is nothing on the monitor or the selected client is floating, attach as normal
++	if(c->mon->sel == NULL || c->mon->sel == c || c->mon->sel->isfloating) {
++		attach(c);
++		return;
++	}
++
++	//Set the new client's next property to the same as the currently selected clients next
++	c->next = c->mon->sel->next;
++	//Set the currently selected clients next property to the new client
++	c->mon->sel->next = c;
++
++}
+ 
+ void
+ attachstack(Client *c)
+@@ -1062,7 +1078,10 @@ manage(Window w, XWindowAttributes *wa)
+ 		c->isfloating = c->oldstate = trans != None || c->isfixed;
+ 	if (c->isfloating)
+ 		XRaiseWindow(dpy, c->win);
+-	attach(c);
++	if( attachbelow )
++		attachBelow(c);
++	else
++		attach(c);
+ 	attachstack(c);
+ 	XChangeProperty(dpy, root, netatom[NetClientList], XA_WINDOW, 32, PropModeAppend,
+ 		(unsigned char *) &(c->win), 1);
+@@ -1417,7 +1436,10 @@ sendmon(Client *c, Monitor *m)
+ 	detachstack(c);
+ 	c->mon = m;
+ 	c->tags = m->tagset[m->seltags]; /* assign tags of target monitor */
+-	attach(c);
++	if( attachbelow )
++		attachBelow(c);
++	else
++		attach(c);
+ 	attachstack(c);
+ 	focus(NULL);
+ 	arrange(NULL);
+@@ -1897,7 +1919,10 @@ updategeom(void)
+ 					m->clients = c->next;
+ 					detachstack(c);
+ 					c->mon = mons;
+-					attach(c);
++					if( attachbelow )
++						attachBelow(c);
++					else
++						attach(c);
+ 					attachstack(c);
+ 				}
+ 				if (m == selmon)

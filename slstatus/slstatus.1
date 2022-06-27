@@ -1,0 +1,28 @@
+.Dd 2020-06-23
+.Dt SLSTATUS 1
+.Os
+.Sh NAME
+.Nm slstatus
+.Nd suckless status monitor
+.Sh SYNOPSIS
+.Nm
+.Op Fl s
+.Op Fl 1
+.Sh DESCRIPTION
+.Nm
+is a suckless status monitor for window managers that use WM_NAME (e.g. dwm) or
+stdin to fill the status bar.
+By default,
+.Nm
+outputs to WM_NAME.
+.Sh OPTIONS
+.Bl -tag -width Ds
+.It Fl s
+Write to stdout instead of WM_NAME.
+.It Fl 1
+Write once to stdout and quit.
+.El
+.Sh CUSTOMIZATION
+.Nm
+can be customized by creating a custom config.h and (re)compiling the source
+code. This keeps it fast, secure and simple.
