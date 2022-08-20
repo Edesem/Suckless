@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "Hack:pixelsize=20:antialias=true:autohint=true";
+static char *font = "Hack:pixelsize=16:antialias=true:autohint=true";
 static char *font2[] = { "Apple Color Emoji:pixelsize=13:antialias=true:autohint=true" };
 static int borderpx = 2;
 
@@ -121,50 +121,80 @@ float alphaUnfocus;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	/* 8 normal colors */
-	"#6E6C7E",
-	"#F28FAD",
-	"#ABE9B3",
-	"#FAE3B0",
-	"#96CDFB",
-	"#F5C2E7",
-	"#89DCEB",
-	"#D9E0EE",
+  /* 8 normal colors */
+  [0] = "#2b303b", /* black   */
+  [1] = "#bf616a", /* red     */
+  [2] = "#a3be8c", /* green   */
+  [3] = "#ebcb8b", /* yellow  */
+  [4] = "#8fa1b3", /* blue    */
+  [5] = "#b48ead", /* magenta */
+  [6] = "#96b5b4", /* cyan    */
+  [7] = "#c0c5ce", /* white   */
 
-	/* 8 bright colors */
-	"#988BA2",
-	"#F28FAD",
-	"#ABE9B3",
-	"#FAE3B0",
-	"#96CDFB",
-	"#F5C2E7",
-	"#89DCEB",
-	"#D9E0EE",
+  /* 8 bright colors */
+  [8]  = "#65737e", /* black   */
+  [9]  = "#bf616a", /* red     */
+  [10] = "#a3be8c", /* green   */
+  [11] = "#ebcb8b", /* yellow  */
+  [12] = "#8fa1b3", /* blue    */
+  [13] = "#b48ead", /* magenta */
+  [14] = "#96b5b4", /* cyan    */
+  [15] = "#eff1f5", /* white   */
 
-
-
-[256] = "#D9E0EE", /* default foreground colour */
-[257] = "#1E1E2E", /* default background colour */
-[258] = "#000000", /*575268*/
-
+  /* special colors */
+  [256] = "#2b303b", /* background */
+  [257] = "#c0c5ce", /* foreground */		
 };
 
-unsigned int defaultfg = 256;
-unsigned int defaultbg = 257;
-unsigned int defaultcs = 256;
-unsigned int defaultrcs = 257;
-unsigned int background = 258;
+
 /*
- * foreground, background, cursor, reverse cursor
+ * Default colors (colorname index)
+ * foreground, background, cursor
  */
-/*
-unsigned int defaultfg = 259;
-unsigned int defaultbg = 258;
-unsigned int defaultcs = 256;
+
+unsigned int defaultfg = 257;
+unsigned int defaultbg = 256;
+unsigned int defaultcs = 257;
 unsigned int defaultrcs = 257;
-unsigned int background = 258;
-*/
+unsigned int background = 256;
+
 /*
+ * Colors used, when the specific fg == defaultfg. So in reverse mode this
+ * will reverse too. Another logic would only make the simple feature too
+ * complex.
+ */
+static unsigned int defaultitalic = 7;
+static unsigned int defaultunderline = 7;
+
+/* ###
+Terminal colors (16 first used in escape sequence)
+static const char *colorname[] = {
+	"#282828", hard contrast: #1d2021 / soft contrast: #32302f
+	"#cc241d",
+	"#98971a",
+	"#d79921",
+	"#458588",
+	"#b16286",
+	"#689d6a",
+	"#a89984",
+	"#928374",
+	"#fb4934",
+	"#b8bb26",
+	"#fabd2f",
+	"#83a598",
+	"#d3869b",
+	"#8ec07c",
+	"#ebdbb2",
+	[255] = 0,
+	more colors can be added after 255 to use with DefaultXX 
+	"#add8e6", 256 -> cursor 
+	"#555555", 257 -> rev cursor
+	"#282828", 258 -> bg 
+	"#ebdbb2", 259 -> fg 
+};
+
+
+
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  
@@ -174,7 +204,6 @@ unsigned int defaultcs = 256;
 unsigned int defaultrcs = 257;
 unsigned int background = 258;
 */
-
 /*
  * Default shape of cursor
  * 2: Block ("█")
