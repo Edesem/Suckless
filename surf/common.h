@@ -1,1 +1,0 @@
-#define MSGBUFSZ 8
