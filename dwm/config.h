@@ -8,7 +8,7 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const int splitstatus        = 1;        /* 1 for split status items */
 static const char *splitdelim        = ";";       /* Character used for separating status */
-static const char *fonts[]          = { "Hack:size=10", "Symbols Nerd Font:size=12" };
+static const char *fonts[]          = { "Hack:size=12", "Symbols Nerd Font:size=12" };
 static const char dmenufont[]       = "size=12";
 static const char col_gray3[]       = "#f1be9b"; 
 static const char col_gray1[]       = "#020914";
