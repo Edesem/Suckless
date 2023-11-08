@@ -6,7 +6,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "Hack:pixelsize=16:antialias=true:autohint=true";
-static char *font2[] = { "Apple Color Emoji:pixelsize=13:antialias=true:autohint=true", "OldHungarian:pixelsize=16" };
+static char *font2[] = { "Apple Color Emoji:pixelsize=13:antialias=true:autohint=true", "OldHungarian:pixelsize=16", "JetBrainsMono Nerd Font :pixelsize=17:antialias=true:autohint=true" };
 static int borderpx = 2;
 
 /*
